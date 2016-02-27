@@ -9,6 +9,7 @@ int maxx, maxy, gridx, gridy, x, y, st=120, end=60;
 int gd=DETECT, gm;
 int score, rep=0, death, dir;
 int map[20][19];
+float offset;
 
 void kill();
 
@@ -16,7 +17,7 @@ void initialize()
 {
 	int i, j;
 	int m[20][19]={
-{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
 {0,1,0,0,1,0,1,0,0,0,0,0,1,0,1,0,0,1,0},
@@ -40,12 +41,13 @@ void initialize()
 		for (j=0; j<19; j++)
 			map[i][j]= m[i][j];
 	
-	x=9, y=14, score= 0, death=0;
+	x=9, y=14, score= 0, death=0, dir=0, st=120, end=60;
 	initgraph(&gd, &gm, "C:\\TURBOC3\\BGI");
 	maxx=getmaxx();
 	maxy=getmaxy();
 	gridx=ceil(maxx/19);
 	gridy=ceil(maxy/20);
+	offset=(maxx%19)/2;
 }
 
 void start()
@@ -53,7 +55,7 @@ void start()
 	setcolor(YELLOW);
 	setfillstyle(SOLID_FILL, YELLOW);
 	sector(maxx/2, maxy/2-50, 330, 30, 20, 20);
-	outtextxy(maxx/2-25,maxy/2, "PacMan");
+	outtextxy(maxx/2-25, maxy/2, "PacMan");
 	outtextxy(maxx/2-84, maxy-50, "Press any key to start");
 	getch();
 	cleardevice();
@@ -61,7 +63,7 @@ void start()
 	outtextxy(maxx/2-130, 180, "Your aim is to eat all the pellets");
 	outtextxy(maxx/2-120, 220, "But be careful! You must avoid");
 	outtextxy(maxx/2-123, 240, "the ghosts trying to catch you!");
-	outtextxy(maxx/2-86, 300, "Use WASD keys to move");
+	outtextxy(maxx/2-86, 320, "Use WASD to change directions");
 	outtextxy(maxx/2-96, maxy-50, "Press any key to continue");
 	getch();	
 }
@@ -95,22 +97,22 @@ void show()
 		{
 		case 0:
 		setfillstyle(SOLID_FILL, BLUE);
-		bar(j*gridx, i*gridy, (j+1)*gridx, (i+1)*gridy);
+		bar(j*gridx+1+offset, i*gridy+1, (j+1)*gridx+offset, (i+1)*gridy);
 		break;
 		case 1:
 		setcolor(WHITE);
-		circle(j*gridx+gridx/2, i*gridy+gridy/2, 2);
+		circle(j*gridx+gridx/2+offset, i*gridy+gridy/2, 2);
 		break;
 		case 2:
 		setfillstyle(SOLID_FILL, BLACK);
-		bar(j*gridx, i*gridy, (j+1)*gridx, (i+1)*gridy);
+		bar(j*gridx+1+offset, i*gridy+1, (j+1)*gridx+offset, (i+1)*gridy);
 		break;
 		}
 	}
 	}
 	setfillstyle(SOLID_FILL, YELLOW);
 	setcolor(YELLOW);
-	slice(gridx*x+gridx/2, gridy*y+gridy/2, st, end, gridy/2-2);
+	slice(gridx*x+gridx/2+offset, gridy*y+gridy/2, st, end, gridy/2-2);
 	printf("\t\t\t\tPress Esc to Pause\t\t\t\t", score);
 }
 
@@ -124,23 +126,23 @@ void update(int l, int m)
 		{
 		case 1:
 		setcolor(WHITE);
-		circle(j*gridx+gridx/2, i*gridy+gridy/2, 2);
+		circle(j*gridx+gridx/2+offset, i*gridy+gridy/2, 2);
 		break;
 		case 2:
 		setfillstyle(SOLID_FILL, BLACK);
-		bar(j*gridx, i*gridy, (j+1)*gridx, (i+1)*gridy);
+		bar(j*gridx+1+offset, i*gridy+1, (j+1)*gridx+offset, (i+1)*gridy);
 		break;
 		}
 	}
 	}
 	setfillstyle(SOLID_FILL, YELLOW);
 	setcolor(YELLOW);
-	slice(gridx*x+gridx/2, gridy*y+gridy/2, st, end, gridy/2-2);
+	slice(gridx*x+gridx/2+offset, gridy*y+gridy/2, st, end, gridy/2-2);
 }
 
 void main()
 {
-	char c;
+	char c, c_old;
 	initialize();
 	if (rep==0)
 		start();
@@ -148,10 +150,10 @@ void main()
 	delay(500);
 	while(1)
 	{
-	delay(300);
-	if (kbhit())
-	{
-		c=getch();
+	delay(250);
+	while (kbhit())
+	{	
+		c= getch();
 		if (c=='w'||c=='W')
 		{
 			dir=0;			
@@ -174,6 +176,7 @@ void main()
 			score=149;
 		else if (c=='!') /*test key for debug*/
 			death=1;
+		
 	}
 	if (dir==0)
 		{
