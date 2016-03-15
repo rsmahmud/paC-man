@@ -5,7 +5,7 @@
 #include<graphics.h>
 #include<math.h>
 
-char ch;
+char ch, sc[10];
 int maxx, maxy, gridx, gridy;
 int gd=DETECT, gm;
 int score, rep=0, death, dir, dark=0, t=300;
@@ -48,6 +48,7 @@ void initialize()
 	initgraph(&gd, &gm, "C:\\TURBOC3\\BGI");
 	maxx=getmaxx();
 	maxy=getmaxy();
+	setviewport(0,0,maxx,maxy,1);
 	gridx=ceil(maxx/19);
 	gridy=ceil(maxy/20);
 	offset=(maxx%19)/2;
@@ -192,12 +193,19 @@ void show()
 	setfillstyle(SOLID_FILL, GREEN);
 	circle(gridx*x3+gridx/2+offset, gridy*y3+gridy/2, gridy/2-2);
 	floodfill(gridx*x3+gridx/2+offset, gridy*y3+gridy/2, GREEN);
-	printf("Lives left: %2d\t\t\tPress Esc to Pause\t\t\t\t", (3-death));
+	printf("\t\t\t\tPress Esc to Pause\t\tLives left: %2d", (3-death));
 }
 
 void update(int l, int m)
 {
 	int i,j,r=1;
+	sprintf(sc,"%d", score);
+	setcolor(WHITE);
+	setviewport(offset,0,offset+120,gridy,1);
+	clearviewport();
+	outtextxy(offset,5,"Score: ");
+	outtextxy(offset+60,5,sc);
+	setviewport(0,0,maxx,maxy,1);
 	if (dark==1)
 	{
 		cleardevice();
@@ -637,13 +645,17 @@ void kill()
 	{
 		outtextxy(maxx/2-46, maxy/2-50, "GAME OVER!");
 		outtextxy(maxx/2-190, maxy-50, "(Press Spacebar to start new game, Esc to exit)");
-		printf(" Your score: %3d", score);
+		sprintf(sc, "%d", score);
+		outtextxy(maxx/2-40, maxy/2-20,"Score: ");
+		outtextxy(maxx/2+15, maxy/2-20,sc);
 	}
 	else
 	{
 		outtextxy(maxx/2-46, maxy/2-50, "GAME PAUSED");
 		outtextxy(maxx/2-240, maxy-50, "(Press P to resume, Spacebar to start new game, Esc to exit)");
-		printf(" Your score: %3d", score);
+		sprintf(sc, "%d", score);
+		outtextxy(maxx/2-40, maxy/2-20,"Score: ");
+		outtextxy(maxx/2+15, maxy/2-20,sc);
 	}
 	delay(750);
 	while(1)
