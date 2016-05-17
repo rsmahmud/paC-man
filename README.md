@@ -3,6 +3,26 @@ Pacman clone in C
 
 An attempt at developing a game by complete novices at C programming, as First Year Computer Engg project.
 
+## Screenshots
+
+<img src="http://i.imgur.com/dfE32Om.png" 
+alt="Splash" width="80%" border="2" />
+
+<img src="http://i.imgur.com/nNTwXDY.png" 
+alt="Intro" width="80%" border="2" />
+
+<img src="http://i.imgur.com/lSL2gTm.png" 
+alt="Difficulty" width="80%" border="2" />
+
+<img src="http://i.imgur.com/f201OVQ.png" 
+alt="Game" width="80%" border="2" />
+
+<img src="http://i.imgur.com/6UDlzER.png" 
+alt="Pause" width="80%" border="2" />
+
+<img src="http://i.imgur.com/q8KGMFM.png" 
+alt="Game Over" width="80%" border="2" />
+
 ## Instructions
 
 ### Note
